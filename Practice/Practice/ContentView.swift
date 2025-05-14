@@ -8,47 +8,65 @@
 import SwiftUI
 
 struct ContentView: View {
-    
     @State private var presentSideMenuL: Bool = false
     @State private var presentSideMenuR: Bool = false
     @State private var showMenu = false
+
+    @Binding var imageOffset: CGSize
+    @Binding var isImageVisible: Bool
     
-    
-   let name = "Mariana Montoya"
-    
+    @State private var dragStartPosition: CGSize = .zero
+
     var body: some View {
-        Text(name)
-            .draggable(name) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(width: 300, height: 300)
-                        .foregroundStyle(.yellow.gradient)
-                    Text("Drop \(name)")
-                        .font(.title)
-                        .foregroundStyle(.red)
-                }
-            }
-        
         NavigationStack {
             ZStack {
-                            
-                VStack {
-                    LSideMenuView(isShowing: $showMenu)
-                }
-                .toolbar(showMenu ? .hidden: .visible, for: .navigationBar)
-                .navigationTitle("Home")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button(action: {
-                            showMenu.toggle()
-                        }, label: {
-                            Image(systemName: "line.horizontal.3")
-                        })
-                    }
-                }
+                // Background
+                Color.white.ignoresSafeArea()
                 
-                
+
+                // Draggable image
+                if isImageVisible {
+                    Image("minion")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 100, height: 100)
+                        .foregroundColor(.yellow)
+                        .offset(imageOffset)
+                        .gesture(
+                            DragGesture()
+                                .onChanged { value in
+                                    imageOffset = CGSize(
+                                        width: value.translation.width + dragStartPosition.width,
+                                        height: value.translation.height + dragStartPosition.height
+                                    )
+                                }
+                                .onEnded { _ in
+                                    dragStartPosition = imageOffset
+                                }
+                        )
+                        .animation(.easeInOut, value: imageOffset)
+                }
+
+                // Side menu (toggle with button)
+                if showMenu {
+                    LSideMenuView(
+                        isShowing: $showMenu,
+                        imageOffset: $imageOffset,
+                        isImageInContentView: $isImageVisible
+                    )
+                }
+            }
+            .toolbar(showMenu ? .hidden : .visible, for: .navigationBar)
+            .navigationTitle("Jack's Stacks")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        showMenu.toggle()
+                    }, label: {
+                        Image(systemName: "line.horizontal.3")
+                    })
+                }
             }
         }
     }
@@ -56,5 +74,14 @@ struct ContentView: View {
 
 
 #Preview {
-    ContentView()
+    ContentViewPreviewWrapper()
+}
+
+struct ContentViewPreviewWrapper: View {
+    @State private var offset: CGSize = .zero
+    @State private var visible: Bool = false
+
+    var body: some View {
+        ContentView(imageOffset: $offset, isImageVisible: $visible)
+    }
 }

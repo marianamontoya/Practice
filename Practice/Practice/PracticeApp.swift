@@ -9,9 +9,16 @@ import SwiftUI
 
 @main
 struct PracticeApp: App {
+    @State private var imageOffset: CGSize = .zero
+    @State private var isImageVisible: Bool = false
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(
+                imageOffset: $imageOffset,
+                isImageVisible: $isImageVisible
+            )
         }
     }
 }
+
