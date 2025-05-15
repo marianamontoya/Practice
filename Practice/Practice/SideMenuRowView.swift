@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LSideMenuRowView: View {
+struct SideMenuRowView: View {
     var body: some View {
         HStack {
             Image(systemName: "paperplane")
@@ -24,5 +24,5 @@ struct LSideMenuRowView: View {
 }
 
 #Preview {
-    LSideMenuRowView()
+    SideMenuRowView()
 }

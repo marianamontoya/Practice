@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LSideMenuHeaderView: View {
+struct SideMenuHeaderView: View {
     var body: some View {
         HStack{
             Image(systemName: "person.circle.fill")
@@ -29,5 +29,5 @@ struct LSideMenuHeaderView: View {
 }
 
 #Preview {
-    LSideMenuHeaderView()
+    SideMenuHeaderView()
 }

@@ -19,7 +19,7 @@ struct MainView: View {
             ContentView(imageOffset: $imageOffset, isImageVisible: $isImageInContentView)
             
             if isShowingMenu {
-                LSideMenuView(
+                SideMenuView(
                     isShowing: $isShowingMenu,
                     imageOffset: $imageOffset,
                     isImageInContentView: $isImageInContentView

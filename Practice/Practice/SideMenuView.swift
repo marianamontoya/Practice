@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LSideMenuView: View {
+struct SideMenuView: View {
     @Binding var isShowing: Bool
     @Binding var imageOffset: CGSize
     @Binding var isImageInContentView: Bool
@@ -27,18 +27,14 @@ struct LSideMenuView: View {
                 
                 HStack {
                     VStack(alignment: .leading, spacing: 32) {
-                        LSideMenuHeaderView()
+                        SideMenuHeaderView()
                         
-                        VStack {
-                            ForEach(0..<5) { _ in
-                                LSideMenuRowView()
-                            }
-                        }
+                        //Insert here for more objects
                         
                         Spacer()
                     }
                     .padding()
-                    .frame(width: 270, alignment: .leading)
+                    .frame(width: 190, alignment: .leading)
                     .background(Color.white)
                     
                     Spacer()
@@ -80,16 +76,16 @@ struct LSideMenuView: View {
 }
 
 #Preview {
-        LSideMenuViewPreviewWrapper()
+        SideMenuViewPreviewWrapper()
 }
 
-struct LSideMenuViewPreviewWrapper: View {
+struct SideMenuViewPreviewWrapper: View {
         @State private var isShowing = true
         @State private var imageOffset: CGSize = .zero
         @State private var isImageInContentView = false
 
         var body: some View {
-            LSideMenuView(
+            SideMenuView(
                 isShowing: $isShowing,
                 imageOffset: $imageOffset,
                 isImageInContentView: $isImageInContentView

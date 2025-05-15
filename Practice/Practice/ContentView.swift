@@ -16,10 +16,14 @@ struct ContentView: View {
     @Binding var isImageVisible: Bool
     
     @State private var dragStartPosition: CGSize = .zero
+    
+    //For removing Images:
+//    @State private var images: [UIImage] = [...] // your image data
+    @State private var removedImages: [UIImage] = []
 
     var body: some View {
         NavigationStack {
-            ZStack {
+            ZStack(alignment: .topTrailing) {
                 // Background
                 Color.white.ignoresSafeArea()
                 
@@ -30,7 +34,7 @@ struct ContentView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 100, height: 100)
-                        .foregroundColor(.yellow)
+                    //Places the image where the user drags it
                         .offset(imageOffset)
                         .gesture(
                             DragGesture()
@@ -42,20 +46,27 @@ struct ContentView: View {
                                 }
                                 .onEnded { _ in
                                     dragStartPosition = imageOffset
-                                }
+                                } //Tracks where the user leaves the image
                         )
-                        .animation(.easeInOut, value: imageOffset)
+                    // Allows it to be draggable to different items such as trashcan
+                        .onDrag {
+                            return NSItemProvider(object: UIImage(named: "minion") ?? UIImage())
+                        }
                 }
 
                 // Side menu (toggle with button)
-                if showMenu {
-                    LSideMenuView(
+                SideMenuView(
                         isShowing: $showMenu,
                         imageOffset: $imageOffset,
                         isImageInContentView: $isImageVisible
                     )
+                TrashCanView {
+                    isImageVisible = false
+                    imageOffset = .zero
                 }
+                .padding(.trailing, 10)
             }
+            //Hides the toolbar when its clicked
             .toolbar(showMenu ? .hidden : .visible, for: .navigationBar)
             .navigationTitle("Jack's Stacks")
             .navigationBarTitleDisplayMode(.inline)
@@ -67,6 +78,7 @@ struct ContentView: View {
                         Image(systemName: "line.horizontal.3")
                     })
                 }
+                
             }
         }
     }
