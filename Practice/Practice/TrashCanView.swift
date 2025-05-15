@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TrashCanView: View {
+struct TrashcanView: View {
     var onDropAction: () -> Void
     @State private var isHovering: Bool = false
     
@@ -24,7 +24,7 @@ struct TrashCanView: View {
 }
 
 #Preview {
-    TrashCanView {
+    TrashcanView {
         print("Image dropped in preview!")
     }
 }

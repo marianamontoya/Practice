@@ -20,11 +20,14 @@ struct MainView: View {
             
             if isShowingMenu {
                 SideMenuView(
+                    side: .left,
                     isShowing: $isShowingMenu,
                     imageOffset: $imageOffset,
                     isImageInContentView: $isImageInContentView
                 )
+                
             }
+            
         }
         
     }

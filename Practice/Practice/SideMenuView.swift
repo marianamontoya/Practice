@@ -7,13 +7,21 @@
 
 import SwiftUI
 
+enum Side {
+    case left, right
+}
+
 struct SideMenuView: View {
+    var side: Side
+    
     @Binding var isShowing: Bool
     @Binding var imageOffset: CGSize
     @Binding var isImageInContentView: Bool
     
     @State private var dragStartPosition: CGSize = .zero
     
+//    var images:[String] // or [UIImage]
+//    
     var body: some View {
         ZStack {
             if isShowing {
@@ -26,18 +34,26 @@ struct SideMenuView: View {
                     }
                 
                 HStack {
-                    VStack(alignment: .leading, spacing: 32) {
-                        SideMenuHeaderView()
-                        
-                        //Insert here for more objects
+                    if side == .left {
+                        VStack(alignment: .leading, spacing: 32) {
+                            SideMenuHeaderView()
+                            Spacer()
+                        }
+                        .padding()
+                        .frame(width: 190, alignment: .leading)
+                        .background(Color.white)
                         
                         Spacer()
+                    } else {
+                        Spacer()
+                        VStack(alignment: .trailing, spacing: 32) {
+                            SideMenuHeaderView()
+                            Spacer()
+                        }
+                        .padding()
+                        .frame(width: 190, alignment: .trailing)
+                        .background(Color.white)
                     }
-                    .padding()
-                    .frame(width: 190, alignment: .leading)
-                    .background(Color.white)
-                    
-                    Spacer()
                 }
                 
                 // Only show star in the menu if it's not in the content view
@@ -70,7 +86,7 @@ struct SideMenuView: View {
                 }
             }
         }
-        .transition(.move(edge: .leading))
+        .transition(.move(edge: side == .left ? .leading : .trailing))
         .animation(.easeInOut, value: isShowing)
     }
 }
@@ -86,6 +102,7 @@ struct SideMenuViewPreviewWrapper: View {
 
         var body: some View {
             SideMenuView(
+                side: .left,
                 isShowing: $isShowing,
                 imageOffset: $imageOffset,
                 isImageInContentView: $isImageInContentView

@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var presentSideMenuL: Bool = false
-    @State private var presentSideMenuR: Bool = false
-    @State private var showMenu = false
+    @State private var showMenuL = false
+    @State private var showMenuR = false
 
     @Binding var imageOffset: CGSize
     @Binding var isImageVisible: Bool
@@ -56,24 +55,41 @@ struct ContentView: View {
 
                 // Side menu (toggle with button)
                 SideMenuView(
-                        isShowing: $showMenu,
+                        side: .left,
+                        isShowing: $showMenuL,
                         imageOffset: $imageOffset,
                         isImageInContentView: $isImageVisible
                     )
-                TrashCanView {
+                
+                if showMenuL {
+                    SideMenuView(side: .left, isShowing: $showMenuL, imageOffset: $imageOffset, isImageInContentView: $isImageVisible)
+                }
+                
+                if showMenuR {
+                    SideMenuView (side: .right, isShowing: $showMenuR, imageOffset: $imageOffset, isImageInContentView: $isImageVisible)
+                }
+                
+                TrashcanView {
                     isImageVisible = false
                     imageOffset = .zero
                 }
                 .padding(.trailing, 10)
             }
             //Hides the toolbar when its clicked
-            .toolbar(showMenu ? .hidden : .visible, for: .navigationBar)
+            .toolbar(showMenuL ? .hidden : .visible, for: .navigationBar)
             .navigationTitle("Jack's Stacks")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
-                        showMenu.toggle()
+                        showMenuL.toggle()
+                    }, label: {
+                        Image(systemName: "line.horizontal.3")
+                    })
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        showMenuR.toggle()
                     }, label: {
                         Image(systemName: "line.horizontal.3")
                     })
